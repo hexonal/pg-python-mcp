@@ -160,3 +160,6 @@ $RECYCLE.BIN/
 
 # Linux
 *~
+
+# MCP configuration (contains sensitive credentials)
+.mcp.json
