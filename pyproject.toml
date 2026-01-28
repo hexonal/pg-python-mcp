@@ -1,6 +1,6 @@
 [project]
 name = "pg-python-mcp"
-version = "1.0.1"
+version = "1.0.2"
 description = "A PostgreSQL MCP server for safe database operations"
 authors = [
     { name = "PG MCP", email = "w741069229@gmail.com" }
@@ -25,6 +25,8 @@ dependencies = [
     "fastmcp>=2.0.0",
     "asyncpg>=0.29.0",
     "sqlparse>=0.4.0",
+    "httpx>=0.27.0",
+    "socksio>=1.0.0",
 ]
 
 [project.urls]
