@@ -6,7 +6,7 @@ import asyncio
 import locale
 from typing import List
 from fastmcp import FastMCP
-from .mysql_handler import MySQLHandler
+from .pg_handler import PostgreSQLHandler
 
 # 检测语言环境
 def _detect_chinese_locale() -> bool:
@@ -32,12 +32,12 @@ def _get_message(zh_msg: str, en_msg: str) -> str:
     return zh_msg if _detect_chinese_locale() else en_msg
 
 # 创建FastMCP应用
-mcp = FastMCP("MySQL Database Server")
+mcp = FastMCP("PostgreSQL Database Server")
 
 @mcp.tool()
 async def list_databases() -> str:
-    """列出MySQL实例中的所有数据库"""
-    handler = MySQLHandler()
+    """列出PostgreSQL实例中的所有数据库"""
+    handler = PostgreSQLHandler()
     try:
         databases = await handler.list_databases()
         message = _get_message(
@@ -64,7 +64,7 @@ async def list_databases() -> str:
 @mcp.tool()
 async def list_tables() -> str:
     """列出当前数据库中的所有表"""
-    handler = MySQLHandler()
+    handler = PostgreSQLHandler()
     try:
         tables = await handler.list_tables()
         message = _get_message(
@@ -95,7 +95,7 @@ async def describe_table(table_name: str) -> str:
     Args:
         table_name: 要描述的表名
     """
-    handler = MySQLHandler()
+    handler = PostgreSQLHandler()
     try:
         result = await handler.describe_table(table_name)
         return result
@@ -117,7 +117,7 @@ async def execute_query(query: str) -> str:
     Args:
         query: 要执行的SQL查询语句
     """
-    handler = MySQLHandler()
+    handler = PostgreSQLHandler()
     try:
         result = await handler.execute_query(query)
         return result

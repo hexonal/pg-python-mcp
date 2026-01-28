@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MySQL MCP Server 主入口点"""
+"""PostgreSQL MCP Server 主入口点"""
 
 import sys
 import os
@@ -7,7 +7,7 @@ import os
 def main():
     """主入口函数"""
     try:
-        print("Starting MySQL FastMCP Server...", file=sys.stderr)
+        print("Starting PostgreSQL FastMCP Server...", file=sys.stderr)
         
         # 导入并运行FastMCP应用
         from . import mcp

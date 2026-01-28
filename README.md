@@ -1,12 +1,12 @@
-# MySQL Python MCP Server
+# PostgreSQL Python MCP Server
 
 [中文文档](README_zh.md) | English
 
-A Python-based MySQL MCP server providing secure database operations with built-in safety checks and AST-based SQL parsing.
+A Python-based PostgreSQL MCP server providing secure database operations with built-in safety checks and AST-based SQL parsing.
 
 ## Features
 
-- 🔍 **Database Listing**: List all databases in the MySQL instance
+- 🔍 **Database Listing**: List all databases in the PostgreSQL instance
 - 📋 **Table Listing**: View all tables in the configured database
 - 🔍 **Table Description**: Detailed table structure information
 - 📊 **Safe Querying**: Execute SQL queries (SELECT only by default)
@@ -25,7 +25,7 @@ A Python-based MySQL MCP server providing secure database operations with built-
 - Detects nested dangerous operations and UNION-based attacks
 
 ### Advanced Mode (Optional)
-Set environment variable `MYSQL_ALLOW_DANGEROUS=true` to enable:
+Set environment variable `PG_ALLOW_DANGEROUS=true` to enable:
 - Full CRUD operations
 - Extended database management functions
 
@@ -35,11 +35,11 @@ Set environment variable `MYSQL_ALLOW_DANGEROUS=true` to enable:
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `MYSQL_HOST` | MySQL host address and port (format: host:port or host) | Yes |
-| `MYSQL_USER` | MySQL username | Yes |
-| `MYSQL_PASSWORD` | MySQL password | Yes |
-| `MYSQL_DATABASE` | Target database name | Yes |
-| `MYSQL_ALLOW_DANGEROUS` | Allow dangerous operations (true/false) | No (default: false) |
+| `PG_HOST` | PostgreSQL host address and port (format: host:port or host) | Yes |
+| `PG_USER` | PostgreSQL username | Yes |
+| `PG_PASSWORD` | PostgreSQL password | Yes |
+| `PG_DATABASE` | Target database name | Yes |
+| `PG_ALLOW_DANGEROUS` | Allow dangerous operations (true/false) | No (default: false) |
 
 ### Claude Desktop Configuration Example
 
@@ -48,18 +48,18 @@ Add to your Claude Desktop configuration file:
 ```json
 {
   "mcpServers": {
-    "mysql": {
+    "postgresql": {
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/hexonal/mysql-python-mcp.git",
-        "mysql-python-mcp"
+        "git+https://github.com/hexonal/pg-python-mcp-.git",
+        "pg-python-mcp"
       ],
       "env": {
-        "MYSQL_HOST": "your-mysql-host:3306",
-        "MYSQL_USER": "your-username",
-        "MYSQL_PASSWORD": "your-password",
-        "MYSQL_DATABASE": "your-database"
+        "PG_HOST": "your-postgres-host:5432",
+        "PG_USER": "your-username",
+        "PG_PASSWORD": "your-password",
+        "PG_DATABASE": "your-database"
       }
     }
   }
@@ -69,7 +69,7 @@ Add to your Claude Desktop configuration file:
 ## Available Tools
 
 ### 1. list_databases
-Lists all databases in the MySQL instance (current configured database is highlighted).
+Lists all databases in the PostgreSQL instance (current configured database is highlighted).
 
 ### 2. list_tables  
 Lists all tables in the currently configured database.
@@ -119,24 +119,24 @@ Executes SQL query statements and returns results in JSON format.
 
 ```bash
 # Install from Git
-uvx --from git+https://github.com/hexonal/mysql-python-mcp.git mysql-python-mcp
+uvx --from git+https://github.com/hexonal/pg-python-mcp-.git pg-python-mcp
 
 # Or for local development
-uvx mysql-python-mcp
+uvx pg-python-mcp
 ```
 
 ### Manual Installation
 
 ```bash
 # Clone repository
-git clone https://github.com/hexonal/mysql-python-mcp.git
-cd mysql-python-mcp
+git clone https://github.com/hexonal/pg-python-mcp-.git
+cd pg-python-mcp
 
 # Install dependencies
 pip install -e .
 
 # Run server
-python -m mysql_mcp
+python -m pg_mcp
 ```
 
 ## Usage Examples
@@ -167,11 +167,11 @@ Parameters: {"query": "SELECT * FROM users LIMIT 10"}
 
 ### Project Structure
 ```
-mysql-python-mcp/
-├── mysql_mcp/
+pg-python-mcp/
+├── pg_mcp/
 │   ├── __init__.py          # Main MCP server entry point
 │   ├── __main__.py          # Run script
-│   └── mysql_handler.py     # MySQL handler with AST security
+│   └── pg_handler.py        # PostgreSQL handler with AST security
 ├── test_ast_security.py     # AST security validation tests
 ├── test_stdio.py           # MCP protocol testing
 ├── pyproject.toml          # Project configuration
@@ -182,8 +182,8 @@ mysql-python-mcp/
 ### Local Development
 ```bash
 # Clone project
-git clone https://github.com/hexonal/mysql-python-mcp.git
-cd mysql-python-mcp
+git clone https://github.com/hexonal/pg-python-mcp-.git
+cd pg-python-mcp
 
 # Install development dependencies
 pip install -e ".[dev]"
@@ -195,17 +195,17 @@ python test_ast_security.py
 python test_stdio.py
 
 # Code formatting
-black mysql_mcp/
-isort mysql_mcp/
+black pg_mcp/
+isort pg_mcp/
 
 # Type checking
-mypy mysql_mcp/
+mypy pg_mcp/
 ```
 
 ## Technology Stack
 
 - **FastMCP 2.0**: Modern MCP framework with decorator-based tool registration
-- **aiomysql**: Async MySQL database operations
+- **asyncpg**: Async PostgreSQL database operations
 - **sqlparse**: SQL Abstract Syntax Tree parsing for security analysis
 - **Python 3.8+**: Broad compatibility support
 
@@ -239,7 +239,7 @@ MIT License
 
 ⚠️ **Important Security Guidelines**:
 - All environment variables are required with no unsafe defaults
-- Ensure minimal MySQL user permissions in production
+- Ensure minimal PostgreSQL user permissions in production
 - Regularly rotate database passwords
 - Avoid using administrative database users in configuration
 - Run this MCP server in isolated environments
@@ -249,9 +249,9 @@ MIT License
 
 ### Common Issues
 
-1. **Connection Failed**: Check if MySQL service is running and network connectivity
+1. **Connection Failed**: Check if PostgreSQL service is running and network connectivity
 2. **Environment Variable Error**: Verify all required environment variables are properly set
-3. **Permission Error**: Confirm MySQL user has access permissions to the specified database
+3. **Permission Error**: Confirm PostgreSQL user has access permissions to the specified database
 4. **Query Rejected**: Check if query contains forbidden keywords, or consider enabling advanced mode
 5. **MCP Protocol Issues**: Ensure you're using FastMCP 2.0 compatible configuration
 

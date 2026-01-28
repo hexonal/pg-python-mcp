@@ -1,12 +1,12 @@
-# MySQL Python MCP Server
+# PostgreSQL Python MCP Server
 
 [English](README.md) | 中文文档
 
-一个基于Python的MySQL MCP服务器，提供安全的数据库操作功能，具备内置安全检查和基于AST的SQL解析。
+一个基于Python的PostgreSQL MCP服务器,提供安全的数据库操作功能,具备内置安全检查和基于AST的SQL解析。
 
 ## 功能特性
 
-- 🔍 **查看数据库**: 列出MySQL实例中的所有数据库
+- 🔍 **查看数据库**: 列出PostgreSQL实例中的所有数据库
 - 📋 **查看表结构**: 列出当前数据库中的所有表
 - 🔍 **表结构描述**: 详细描述表的结构信息
 - 📊 **安全查询**: 执行SQL查询（默认仅支持SELECT语句）
@@ -22,8 +22,8 @@
 - 严格限制在配置的数据库范围内操作
 - 防止SQL注入攻击
 
-### 高级模式（可选）
-通过设置环境变量 `MYSQL_ALLOW_DANGEROUS=true` 可以启用：
+### 高级模式(可选)
+通过设置环境变量 `PG_ALLOW_DANGEROUS=true` 可以启用:
 - 增删查改操作
 - 更多数据库管理功能
 
@@ -33,11 +33,11 @@
 
 | 变量名 | 描述 | 必需 |
 |--------|------|------|
-| `MYSQL_HOST` | MySQL主机地址和端口 (格式: host:port 或 host) | 是 |
-| `MYSQL_USER` | MySQL用户名 | 是 |
-| `MYSQL_PASSWORD` | MySQL密码 | 是 |
-| `MYSQL_DATABASE` | 目标数据库名 | 是 |
-| `MYSQL_ALLOW_DANGEROUS` | 是否允许危险操作 (true/false) | 否 (默认: false) |
+| `PG_HOST` | PostgreSQL主机地址和端口 (格式: host:port 或 host) | 是 |
+| `PG_USER` | PostgreSQL用户名 | 是 |
+| `PG_PASSWORD` | PostgreSQL密码 | 是 |
+| `PG_DATABASE` | 目标数据库名 | 是 |
+| `PG_ALLOW_DANGEROUS` | 是否允许危险操作 (true/false) | 否 (默认: false) |
 
 ### Claude Desktop 配置示例
 
@@ -46,18 +46,18 @@
 ```json
 {
   "mcpServers": {
-    "mysql": {
-      "command": "uv",
+    "postgresql": {
+      "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/your-repo/mysql-python-mcp.git",
-        "mysql-python-mcp"
+        "git+https://github.com/hexonal/pg-python-mcp-.git",
+        "pg-python-mcp"
       ],
       "env": {
-        "MYSQL_HOST": "your-mysql-host:3306",
-        "MYSQL_USER": "your-username",
-        "MYSQL_PASSWORD": "your-password",
-        "MYSQL_DATABASE": "your-database"
+        "PG_HOST": "your-postgres-host:5432",
+        "PG_USER": "your-username",
+        "PG_PASSWORD": "your-password",
+        "PG_DATABASE": "your-database"
       }
     }
   }
@@ -67,7 +67,7 @@
 ## 可用工具
 
 ### 1. list_databases
-列出MySQL实例中的所有数据库（当前配置的数据库会被特别标注）。
+列出PostgreSQL实例中的所有数据库(当前配置的数据库会被特别标注)。
 
 ### 2. list_tables  
 列出当前配置数据库中的所有表。
@@ -116,24 +116,24 @@
 
 ```bash
 # 通过Git安装
-uv add git+https://github.com/your-repo/mysql-python-mcp.git
+uvx --from git+https://github.com/hexonal/pg-python-mcp-.git pg-python-mcp
 
 # 或本地开发
-uv add -e .
+uvx pg-python-mcp
 ```
 
 ### 手动安装
 
 ```bash
 # 克隆仓库
-git clone <repository-url>
-cd mysql-python-mcp
+git clone https://github.com/hexonal/pg-python-mcp-.git
+cd pg-python-mcp
 
 # 安装依赖
 pip install -e .
 
 # 运行服务器
-python -m mysql_mcp
+python -m pg_mcp
 ```
 
 ## 使用示例
@@ -164,11 +164,11 @@ python -m mysql_mcp
 
 ### 项目结构
 ```
-mysql-python-mcp/
-├── mysql_mcp/
+pg-python-mcp/
+├── pg_mcp/
 │   ├── __init__.py          # MCP服务器主入口
 │   ├── __main__.py          # 运行脚本
-│   └── mysql_handler.py     # MySQL处理器
+│   └── pg_handler.py        # PostgreSQL处理器
 ├── pyproject.toml           # 项目配置
 └── README.md                # 项目说明
 ```
@@ -176,21 +176,21 @@ mysql-python-mcp/
 ### 本地开发
 ```bash
 # 克隆项目
-git clone <repository-url>
-cd mysql-python-mcp
+git clone https://github.com/hexonal/pg-python-mcp-.git
+cd pg-python-mcp
 
 # 安装开发依赖
-uv sync --dev
+pip install -e ".[dev]"
 
 # 运行测试
-python standalone_test.py
+python test_stdio.py
 
 # 代码格式化
-black mysql_mcp/
-isort mysql_mcp/
+black pg_mcp/
+isort pg_mcp/
 
 # 类型检查
-mypy mysql_mcp/
+mypy pg_mcp/
 ```
 
 ## 许可证
@@ -200,18 +200,18 @@ MIT License
 ## 安全说明
 
 ⚠️ **重要安全提示**:
-- 所有环境变量均为必需，不提供不安全的默认值
-- 在生产环境中使用时，请确保MySQL用户权限最小化
+- 所有环境变量均为必需,不提供不安全的默认值
+- 在生产环境中使用时,请确保PostgreSQL用户权限最小化
 - 定期更换数据库密码
 - 不要在配置中使用管理员权限的数据库用户
 - 建议在隔离环境中运行此MCP服务器
-- 默认的安全模式已经提供了基本保护，但不能替代完整的安全策略
+- 默认的安全模式已经提供了基本保护,但不能替代完整的安全策略
 
 ## 故障排除
 
 ### 常见问题
 
-1. **连接失败**: 检查MySQL服务是否运行，网络连接是否正常
+1. **连接失败**: 检查PostgreSQL服务是否运行,网络连接是否正常
 2. **环境变量错误**: 确认所有必需的环境变量已正确设置
-3. **权限错误**: 确认MySQL用户具有访问指定数据库的权限
-4. **查询被拒绝**: 检查查询是否包含被禁止的关键词，或考虑启用高级模式
+3. **权限错误**: 确认PostgreSQL用户具有访问指定数据库的权限
+4. **查询被拒绝**: 检查查询是否包含被禁止的关键词,或考虑启用高级模式
